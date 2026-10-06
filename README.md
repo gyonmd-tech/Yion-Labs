@@ -31,13 +31,19 @@ Halaman marketing bisa dibuka tanpa env. Halaman auth dan `/app` butuh proyek Su
 | `NEXT_PUBLIC_SUPABASE_URL` | Ya | URL proyek, dari Supabase → Project Settings → API |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Ya | Anon (public) key dari halaman yang sama |
 | `NEXT_PUBLIC_SITE_URL` | Tidak | URL situs untuk tautan email dan redirect Google. Default `http://localhost:3000` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Ya | Service role key (Project Settings → API). Hanya dipakai di server untuk ledger kredit, hasil generate, dan batas pemakaian |
+| `AI_TEXT_PROVIDER` | Ya | `anthropic` untuk Claude, atau `mock` untuk data tiruan berlabel `[TIRUAN]` saat pengembangan |
+| `ANTHROPIC_API_KEY` | Bila `anthropic` | Kunci API dari console.anthropic.com |
+| `AI_TEXT_MODEL` | Tidak | Model teks. Default `claude-opus-5-5` |
 
-Semua env dibaca lewat `lib/env.ts` dan divalidasi dengan zod. Jangan commit `.env.local`. Service role key belum dipakai di Fase 0.
+Semua env dibaca lewat `lib/env.ts` dan divalidasi dengan zod. Env server (service role, kunci AI) tidak pernah dikirim ke browser. Jangan commit `.env.local`.
 
 ### Menyiapkan Supabase
 
 1. Buat proyek di [supabase.com](https://supabase.com), lalu isi dua variabel Supabase di `.env.local`.
 2. Jalankan migrasi di `supabase/migrations/` secara berurutan: tempel isinya di SQL Editor, atau jalankan `supabase link` lalu `supabase db push` dengan Supabase CLI.
+   - `20261006000000_profiles.sql`: profil pengguna dan trigger saat daftar
+   - `20261007000000_credits_generations.sql`: ledger kredit, hasil generate, aset, batas harian, rate limit, dan fungsi-fungsinya
 3. Buka Authentication → URL Configuration:
    - **Site URL**: `http://localhost:3000` (produksi: domain kamu)
    - **Redirect URLs**: tambahkan `http://localhost:3000/auth/callback` dan versi produksinya
@@ -54,8 +60,30 @@ Semua env dibaca lewat `lib/env.ts` dan divalidasi dengan zod. Jangan commit `.e
 | `pnpm lint` | ESLint |
 | `pnpm typecheck` | Generate tipe rute lalu `tsc --noEmit` |
 | `pnpm format` / `pnpm format:check` | Prettier |
+| `pnpm test` | Vitest: lapisan AI, endpoint PRD Mini, dan ledger kredit |
 
 Setiap task wajib lulus `pnpm lint`, `pnpm typecheck`, dan `pnpm build`.
+
+### Tes dan Supabase tiruan
+
+`pnpm test` tidak butuh proyek Supabase. Tes memakai `tests/support/fake-supabase.ts`: Postgres di dalam proses (PGlite) dengan migrasi asli, ditambah tiruan sebagian API REST dan Auth Supabase. Permintaan atas nama pengguna berjalan sebagai peran `authenticated`, jadi RLS ikut teruji.
+
+Server tiruan yang sama bisa dipakai untuk mencoba aplikasi tanpa Supabase:
+
+```bash
+node tests/support/fake-supabase-server.mts   # http://127.0.0.1:54321, data hilang saat dihentikan
+```
+
+Lalu isi `.env.local`:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
+NEXT_PUBLIC_SUPABASE_ANON_KEY=fake-anon-key
+SUPABASE_SERVICE_ROLE_KEY=fake-service-role-key
+AI_TEXT_PROVIDER=mock
+```
+
+Daftar akun lewat `/daftar` seperti biasa. Login Google dan email sungguhan tetap butuh Supabase asli.
 
 ## Struktur
 
@@ -64,13 +92,16 @@ app/
   (marketing)/   situs publik: /, /modul, /harga, /contoh, /faq, /kontak, /syarat, /privasi
   (auth)/        /masuk, /daftar, /lupa-password, /atur-password + Server Actions
   auth/          /auth/callback (OAuth dan tautan email), /auth/keluar (POST)
-  app/           portal /app dan workspace /app/[module]
-modules/<slug>/  manifest.ts per modul (nanti: schema.ts, prompt.ts, ui/)
+  app/           portal /app, workspace /app/[module], /app/library, /app/kredit
+  api/ai/        endpoint generate per modul (mis. /api/ai/prd)
+modules/<slug>/  manifest.ts, schema.ts, prompt.ts, ui/ per modul
 config/          brand.ts, modules.ts
 content/         semua teks UI berbahasa Indonesia
 components/      ui/ (shadcn), shell/ (aplikasi), marketing/
-lib/             env.ts, supabase/, auth/, modules/
+lib/             env.ts, supabase/, auth/, modules/, credits/ (satu-satunya penulis saldo),
+                 ai/ (text.ts + providers/), generations/, usage/ (batas harian, rate limit)
 supabase/        migrations/
+tests/           Vitest + Supabase tiruan
 proxy.ts         penyegar sesi + pelindung /app (pengganti middleware di Next.js 16)
 ```
 
