@@ -15,7 +15,7 @@ Aturan semua fase: task baru boleh dicentang hanya setelah `pnpm lint`, `pnpm ty
 - [ ] Proyek Supabase, auth email + Google, halaman `/masuk`, `/daftar`, `/lupa-password`, middleware yang melindungi `/app`
 - [x] Tabel `profiles` dan trigger saat pengguna daftar
 - [x] Portal `/app` membaca manifest; workspace shell (sidebar, topbar, dua panel, tab mobile)
-- [ ] README: cara menjalankan lokal dan daftar variabel env
+- [x] README: cara menjalankan lokal dan daftar variabel env
 
 ## Fase 1: Kredit, library, lapisan AI, PRD Mini (P-04, P-05, M5-01)
 
