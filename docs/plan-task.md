@@ -8,7 +8,7 @@ Aturan semua fase: task baru boleh dicentang hanya setelah `pnpm lint`, `pnpm ty
 
 **Selesai bila:** semua halaman publik bisa dibuka, daftar dan masuk berfungsi, `/app` menampilkan portal dengan 5 kartu modul berstatus Segera, dan workspace shell kosong tampil.
 
-- [ ] Init Next.js + TypeScript + Tailwind + shadcn/ui, ESLint, Prettier, pnpm
+- [x] Init Next.js + TypeScript + Tailwind + shadcn/ui, ESLint, Prettier, pnpm
 - [ ] Buat `config/brand.ts`, `config/modules.ts`, dan token CSS dari Design System
 - [ ] Layout marketing: bar pengumuman, nav dengan menu Modul, footer empat kolom
 - [ ] Halaman `/`, `/modul`, `/modul/[slug]`, `/harga`, `/contoh`, `/faq`, `/kontak`, `/syarat`, `/privasi` dengan konten placeholder yang jujur

@@ -2,6 +2,8 @@
 
 Sumber kebenaran ada di `/docs`: `prd.md`, `architecture.md`, `design-system.md`, `plan-task.md`, `agent-rules.md` (keputusan awal di `docs/README.md`). Baca semuanya di awal setiap sesi.
 
+Catatan Next.js 16 (dikelola otomatis oleh `next dev`): @AGENTS.md
+
 
 Aturan ini berlaku di setiap sesi; jika permintaan di chat bertentangan dengannya, Claude bertanya dulu sebelum bertindak.
 
