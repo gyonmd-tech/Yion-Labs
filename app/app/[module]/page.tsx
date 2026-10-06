@@ -4,12 +4,9 @@ import { notFound } from "next/navigation";
 import { Clock, Inbox } from "lucide-react";
 import { getModule } from "@/config/modules";
 import { appCopy } from "@/content/app";
-import { formatModuleCost } from "@/content/common";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/shell/empty-state";
-import { ModuleIcon } from "@/components/shell/module-icon";
-import { ModuleStatusBadge } from "@/components/shell/module-status-badge";
+import { ModuleHeader } from "@/components/shell/module-header";
 import { Workspace } from "@/components/shell/workspace";
 
 export async function generateMetadata(props: PageProps<"/app/[module]">): Promise<Metadata> {
@@ -24,24 +21,10 @@ export default async function ModuleWorkspacePage(props: PageProps<"/app/[module
   if (!m) notFound();
   const w = appCopy.workspace;
 
-  // Fase 0: semua modul berstatus Segera; panel diisi saat modul dibangun.
+  // Modul yang belum dibangun memakai kerangka kosong ini. Modul aktif punya rute sendiri (mis. /app/prd).
   return (
     <Workspace
-      header={
-        <div className="flex items-start gap-3">
-          <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-accent text-primary">
-            <ModuleIcon name={m.icon} className="size-5" />
-          </span>
-          <div className="flex min-w-0 flex-col gap-1.5">
-            <h1 className="type-h3">{m.name}</h1>
-            <p className="text-sm text-muted-foreground">{m.tagline}</p>
-            <div className="flex flex-wrap gap-2">
-              <ModuleStatusBadge status={m.status} />
-              <Badge variant="accent">{formatModuleCost(m.cost)}</Badge>
-            </div>
-          </div>
-        </div>
-      }
+      header={<ModuleHeader module={m} />}
       input={
         <EmptyState
           icon={<Clock aria-hidden="true" />}

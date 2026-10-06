@@ -24,6 +24,12 @@ export const appCopy = {
     menu: "Menu akun",
     signOut: "Keluar",
   },
+  copy: {
+    label: "Salin",
+    done: "Tersalin",
+    success: "Tersalin ke clipboard.",
+    failed: "Gagal menyalin. Salin manual dari halaman ini.",
+  },
   workspace: {
     inputTab: "Input",
     resultTab: "Hasil",
