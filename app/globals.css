@@ -3,33 +3,54 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Token Design System Labs (docs/design-system.md).
+ * Ubah nilai di sini saja; komponen hanya memakai token.
+ * Mode gelap nanti cukup menimpa variabel ini di bawah `.dark`.
+ */
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  /* Warna dasar */
+  --primary: #5b3df5;
+  --primary-foreground: #ffffff;
+  --bg: #ffffff;
+  --bg-subtle: #f7f6fb;
+  --text: #14121f;
+  --text-muted: #6b6880;
+  --border: #e6e4f0;
+  --success: #12a150;
+  --warning: #e8a200;
+  --danger: #dc3545;
+
+  /* Alias untuk komponen shadcn/ui */
+  --background: var(--bg);
+  --foreground: var(--text);
+  --card: var(--bg);
+  --card-foreground: var(--text);
+  --popover: var(--bg);
+  --popover-foreground: var(--text);
+  --secondary: var(--bg-subtle);
+  --secondary-foreground: var(--text);
+  --muted: var(--bg-subtle);
+  --muted-foreground: var(--text-muted);
+  --accent: color-mix(in oklab, var(--primary) 8%, var(--bg));
+  --accent-foreground: var(--text);
+  --destructive: var(--danger);
+  --input: var(--border);
+  --ring: var(--primary);
+
+  /* Radius */
+  --radius-card-value: 16px;
+  --radius-control-value: 10px;
+
+  /* Layout */
+  --container-max: 1200px;
+  --section-space: 56px;
+  --section-space-md: 96px;
+  --sidebar-width: 240px;
+  --topbar-height: 56px;
 }
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -48,13 +69,98 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-bg-subtle: var(--bg-subtle);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-jakarta);
+
+  --radius-sm: 6px;
+  --radius-md: var(--radius-control-value);
+  --radius-lg: 12px;
+  --radius-xl: var(--radius-card-value);
+  --radius-control: var(--radius-control-value);
+  --radius-card: var(--radius-card-value);
+
+  --spacing-sidebar: var(--sidebar-width);
+  --spacing-topbar: var(--topbar-height);
+
+  /* Skala teks: isi 16/26, kecil 14/20 */
+  --text-base: 1rem;
+  --text-base--line-height: 1.625rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+}
+
+@theme {
+  --breakpoint-sm: 375px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+}
+
+/* Judul: H1 56/60 (mobile 36/40), H2 40/44 (mobile 28/34), H3 24/32 */
+@utility type-h1 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  @variant md {
+    font-size: 3.5rem;
+    line-height: 3.75rem;
+  }
+}
+
+@utility type-h2 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-size: 1.75rem;
+  line-height: 2.125rem;
+  @variant md {
+    font-size: 2.5rem;
+    line-height: 2.75rem;
+  }
+}
+
+@utility type-h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: 16px;
+  @variant md {
+    padding-inline: 24px;
+  }
+}
+
+@utility section-y {
+  padding-block: var(--section-space);
+  @variant md {
+    padding-block: var(--section-space-md);
+  }
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background font-sans text-base text-foreground;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
   }
 }
