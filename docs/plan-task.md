@@ -13,7 +13,7 @@ Aturan semua fase: task baru boleh dicentang hanya setelah `pnpm lint`, `pnpm ty
 - [x] Layout marketing: bar pengumuman, nav dengan menu Modul, footer empat kolom
 - [x] Halaman `/`, `/modul`, `/modul/[slug]`, `/harga`, `/contoh`, `/faq`, `/kontak`, `/syarat`, `/privasi` dengan konten placeholder yang jujur
 - [ ] Proyek Supabase, auth email + Google, halaman `/masuk`, `/daftar`, `/lupa-password`, middleware yang melindungi `/app`
-- [ ] Tabel `profiles` dan trigger saat pengguna daftar
+- [x] Tabel `profiles` dan trigger saat pengguna daftar
 - [ ] Portal `/app` membaca manifest; workspace shell (sidebar, topbar, dua panel, tab mobile)
 - [ ] README: cara menjalankan lokal dan daftar variabel env
 
