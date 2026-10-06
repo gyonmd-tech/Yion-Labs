@@ -9,7 +9,12 @@ import type { NavModule } from "@/components/shell/app-nav";
 export function AppBreadcrumb({ modules }: { modules: readonly NavModule[] }) {
   const pathname = usePathname();
   const slug = pathname.split("/")[2];
-  const current = modules.find((m) => m.slug === slug);
+  const pages: Record<string, string> = {
+    library: appCopy.nav.library,
+    kredit: appCopy.nav.credits,
+  };
+  const name = modules.find((m) => m.slug === slug)?.name ?? (slug ? pages[slug] : undefined);
+  const current = name ? { name } : undefined;
 
   return (
     <nav aria-label={appCopy.nav.breadcrumb} className="min-w-0">

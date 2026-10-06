@@ -48,7 +48,7 @@ export function AppShell({
           <div className="min-w-0 flex-1">
             <AppBreadcrumb modules={navModules} />
           </div>
-          <CreditPill balance={balance} />
+          <CreditPill balance={balance} href="/app/kredit" />
           <AccountMenu name={user.name} email={user.email} />
         </header>
         <div className="flex flex-1 flex-col">{children}</div>

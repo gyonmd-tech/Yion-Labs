@@ -2,11 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid } from "lucide-react";
+import { Coins, Library, LayoutGrid, type LucideIcon } from "lucide-react";
 import { appCopy } from "@/content/app";
 import type { ModuleIconName, ModuleSlug } from "@/lib/modules/types";
 import { cn } from "@/lib/utils";
 import { ModuleIcon } from "@/components/shell/module-icon";
+
+const fixedItems: { href: string; label: string; icon: LucideIcon }[] = [
+  { href: "/app", label: appCopy.portalLabel, icon: LayoutGrid },
+  { href: "/app/library", label: appCopy.nav.library, icon: Library },
+  { href: "/app/kredit", label: appCopy.nav.credits, icon: Coins },
+];
 
 export type NavModule = { slug: ModuleSlug; name: string; icon: ModuleIconName };
 
@@ -34,17 +40,23 @@ export function AppNav({
 
   return (
     <nav aria-label={appCopy.nav.main} className="flex flex-col gap-1">
-      <Link
-        href="/app"
-        onClick={onNavigate}
-        aria-current={pathname === "/app" ? "page" : undefined}
-        aria-label={compact ? appCopy.portalLabel : undefined}
-        title={compact ? appCopy.portalLabel : undefined}
-        className={item(pathname === "/app")}
-      >
-        <LayoutGrid aria-hidden="true" className="size-5 shrink-0" />
-        {!compact && appCopy.portalLabel}
-      </Link>
+      {fixedItems.map(({ href, label, icon: Icon }) => {
+        const active = href === "/app" ? pathname === href : pathname.startsWith(href);
+        return (
+          <Link
+            key={href}
+            href={href}
+            onClick={onNavigate}
+            aria-current={active ? "page" : undefined}
+            aria-label={compact ? label : undefined}
+            title={compact ? label : undefined}
+            className={item(active)}
+          >
+            <Icon aria-hidden="true" className="size-5 shrink-0" />
+            {!compact && label}
+          </Link>
+        );
+      })}
       {!compact && (
         <p className="px-3 pt-4 pb-1 text-xs font-semibold text-muted-foreground uppercase">
           {appCopy.nav.modules}

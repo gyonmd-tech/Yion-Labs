@@ -24,7 +24,12 @@ export const generationRowSchema = z.object({
 
 export type GenerationRow = z.infer<typeof generationRowSchema>;
 
+export const generationListItemSchema = generationRowSchema.omit({ input: true, output: true });
+export type GenerationListItem = z.infer<typeof generationListItemSchema>;
+
 const COLUMNS = "id, module, title, input, output, status, cost_credits, created_at";
+/** Untuk daftar: tanpa input/output agar ringan. */
+const LIST_COLUMNS = "id, module, title, status, cost_credits, created_at";
 
 export async function createQueuedGeneration(input: {
   userId: string;
@@ -79,18 +84,18 @@ export async function listMyGenerations(options: {
   module?: ModuleSlug;
   limit?: number;
   status?: (typeof GENERATION_STATUSES)[number];
-}): Promise<GenerationRow[]> {
+}): Promise<GenerationListItem[]> {
   const supabase = await createClient();
   let query = supabase
     .from("generations")
-    .select(COLUMNS)
+    .select(LIST_COLUMNS)
     .order("created_at", { ascending: false })
     .limit(options.limit ?? 50);
   if (options.module) query = query.eq("module", options.module);
   if (options.status) query = query.eq("status", options.status);
   const { data, error } = await query;
   if (error) throw new Error("Gagal membaca hasil.", { cause: error });
-  return z.array(generationRowSchema).parse(data);
+  return z.array(generationListItemSchema).parse(data);
 }
 
 export async function getMyGeneration(id: string): Promise<GenerationRow | null> {

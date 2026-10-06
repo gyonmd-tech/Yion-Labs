@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { History } from "lucide-react";
 import { modules } from "@/config/modules";
 import { appCopy } from "@/content/app";
 import { requireProfile } from "@/lib/auth/current-profile";
 import { ensureBonusAndGetBalance } from "@/lib/credits";
+import { listMyGenerations } from "@/lib/generations/repository";
+import { GenerationList } from "@/components/shell/generation-list";
 import { Button } from "@/components/ui/button";
 import { CreditPill } from "@/components/shell/credit-pill";
 import { EmptyState } from "@/components/shell/empty-state";
@@ -14,7 +17,10 @@ export const metadata: Metadata = { title: appCopy.portalLabel };
 export default async function PortalPage() {
   const profile = await requireProfile();
   const firstName = profile.name.split(" ")[0] ?? "";
-  const balance = await ensureBonusAndGetBalance(profile.id);
+  const [balance, recent] = await Promise.all([
+    ensureBonusAndGetBalance(profile.id),
+    listMyGenerations({ status: "done", limit: 3 }),
+  ]);
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-8 md:px-6 md:py-10">
@@ -25,8 +31,8 @@ export default async function PortalPage() {
         </div>
         <div className="flex items-center gap-3">
           <CreditPill balance={balance} className="h-11" />
-          <Button disabled title={appCopy.topUpSoon}>
-            {appCopy.topUp}
+          <Button asChild>
+            <Link href="/app/kredit">{appCopy.topUp}</Link>
           </Button>
         </div>
       </section>
@@ -48,11 +54,15 @@ export default async function PortalPage() {
         <h2 id="judul-lanjutkan" className="font-heading text-lg font-bold">
           {appCopy.continueTitle}
         </h2>
-        <EmptyState
-          icon={<History aria-hidden="true" />}
-          title={appCopy.continueEmptyTitle}
-          description={appCopy.continueEmptyBody}
-        />
+        {recent.length > 0 ? (
+          <GenerationList items={recent} />
+        ) : (
+          <EmptyState
+            icon={<History aria-hidden="true" />}
+            title={appCopy.continueEmptyTitle}
+            description={appCopy.continueEmptyBody}
+          />
+        )}
       </section>
     </div>
   );
