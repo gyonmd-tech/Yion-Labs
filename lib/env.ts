@@ -63,3 +63,34 @@ export function getServerEnv(): ServerEnv {
   cachedServer = parsed.data;
   return cachedServer;
 }
+
+/** Konfigurasi lapisan AI. Provider dipilih di sini, bukan di kode modul. */
+const aiEnvSchema = z
+  .object({
+    AI_TEXT_PROVIDER: z.enum(["anthropic", "mock"]),
+    AI_TEXT_MODEL: z.string().min(1).default("claude-opus-5-5"),
+    ANTHROPIC_API_KEY: z.string().min(1).optional(),
+  })
+  .refine((env) => env.AI_TEXT_PROVIDER !== "anthropic" || Boolean(env.ANTHROPIC_API_KEY), {
+    path: ["ANTHROPIC_API_KEY"],
+    message: "wajib diisi bila AI_TEXT_PROVIDER=anthropic",
+  });
+
+export type AiEnv = z.infer<typeof aiEnvSchema>;
+
+let cachedAi: AiEnv | undefined;
+
+export function getAiEnv(): AiEnv {
+  assertServer();
+  if (cachedAi) return cachedAi;
+  const parsed = aiEnvSchema.safeParse({
+    AI_TEXT_PROVIDER: process.env.AI_TEXT_PROVIDER,
+    AI_TEXT_MODEL: process.env.AI_TEXT_MODEL || undefined,
+    ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY || undefined,
+  });
+  if (!parsed.success) {
+    throw new Error(`Env AI tidak valid atau belum diisi: ${formatIssues(parsed.error)}.`);
+  }
+  cachedAi = parsed.data;
+  return cachedAi;
+}
