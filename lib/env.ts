@@ -28,3 +28,38 @@ export function getPublicEnv(): PublicEnv {
   cached = parsed.data;
   return cached;
 }
+
+/**
+ * Env khusus server (service role, kunci AI). Jangan dipanggil dari komponen client;
+ * nilainya tidak pernah ikut ke bundle browser.
+ */
+const serverEnvSchema = z.object({
+  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
+});
+
+export type ServerEnv = z.infer<typeof serverEnvSchema>;
+
+let cachedServer: ServerEnv | undefined;
+
+function assertServer() {
+  if (typeof window !== "undefined") {
+    throw new Error("Env server tidak boleh dibaca di browser.");
+  }
+}
+
+function formatIssues(error: z.ZodError) {
+  return error.issues.map((i) => i.path.join(".") || i.message).join(", ");
+}
+
+export function getServerEnv(): ServerEnv {
+  assertServer();
+  if (cachedServer) return cachedServer;
+  const parsed = serverEnvSchema.safeParse({
+    SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
+  });
+  if (!parsed.success) {
+    throw new Error(`Env server tidak valid atau belum diisi: ${formatIssues(parsed.error)}.`);
+  }
+  cachedServer = parsed.data;
+  return cachedServer;
+}

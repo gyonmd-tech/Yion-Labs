@@ -3,6 +3,7 @@ import { History } from "lucide-react";
 import { modules } from "@/config/modules";
 import { appCopy } from "@/content/app";
 import { requireProfile } from "@/lib/auth/current-profile";
+import { ensureBonusAndGetBalance } from "@/lib/credits";
 import { Button } from "@/components/ui/button";
 import { CreditPill } from "@/components/shell/credit-pill";
 import { EmptyState } from "@/components/shell/empty-state";
@@ -13,6 +14,7 @@ export const metadata: Metadata = { title: appCopy.portalLabel };
 export default async function PortalPage() {
   const profile = await requireProfile();
   const firstName = profile.name.split(" ")[0] ?? "";
+  const balance = await ensureBonusAndGetBalance(profile.id);
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-8 md:px-6 md:py-10">
@@ -22,7 +24,7 @@ export default async function PortalPage() {
           <p className="text-muted-foreground">{appCopy.portalDescription}</p>
         </div>
         <div className="flex items-center gap-3">
-          <CreditPill balance={null} className="h-11" />
+          <CreditPill balance={balance} className="h-11" />
           <Button disabled title={appCopy.topUpSoon}>
             {appCopy.topUp}
           </Button>
