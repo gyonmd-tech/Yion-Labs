@@ -8,7 +8,7 @@ export const manifest = {
   description:
     "Tulis ide produkmu dalam satu paragraf. PRD Mini menyusun dokumen kebutuhan produk satu halaman beserta potongan scope MVP.",
   icon: "file-text",
-  status: "soon",
+  status: "active",
   cost: { kind: "free", dailyLimit: 3 },
   costDetails: ["Gratis, maksimal 3 per hari"],
   inputs: ["Ide produk satu paragraf"],

@@ -24,7 +24,7 @@ Aturan semua fase: task baru boleh dicentang hanya setelah `pnpm lint`, `pnpm ty
 - [x] Migrasi `credit_ledger`, `generations`, `assets`, `usage_limits` beserta RLS
 - [ ] `lib/credits`: saldo, spend transaksional dan idempoten, refund, bonus daftar
 - [ ] `lib/ai/text.ts` dengan satu provider, validasi zod, retry satu kali, timeout
-- [ ] Endpoint `/api/ai/prd` dengan rate limit dan batas harian
+- [x] Endpoint `/api/ai/prd` dengan rate limit dan batas harian
 - [ ] UI modul PRD Mini: input, hasil, salin, simpan
 - [ ] Library `/app/library` dan halaman `/app/kredit` (saldo dan riwayat ledger)
 - [ ] Tes unit ledger: saldo tidak bisa negatif, spend idempoten
