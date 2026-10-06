@@ -21,7 +21,7 @@ Aturan semua fase: task baru boleh dicentang hanya setelah `pnpm lint`, `pnpm ty
 
 **Selesai bila:** pengguna baru mendapat 10 kredit, PRD Mini menghasilkan dokumen yang tersimpan di library, dan batas 3 per hari berlaku di server.
 
-- [ ] Migrasi `credit_ledger`, `generations`, `assets`, `usage_limits` beserta RLS
+- [x] Migrasi `credit_ledger`, `generations`, `assets`, `usage_limits` beserta RLS
 - [ ] `lib/credits`: saldo, spend transaksional dan idempoten, refund, bonus daftar
 - [ ] `lib/ai/text.ts` dengan satu provider, validasi zod, retry satu kali, timeout
 - [ ] Endpoint `/api/ai/prd` dengan rate limit dan batas harian
