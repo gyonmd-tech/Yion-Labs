@@ -22,12 +22,12 @@ Aturan semua fase: task baru boleh dicentang hanya setelah `pnpm lint`, `pnpm ty
 **Selesai bila:** pengguna baru mendapat 10 kredit, PRD Mini menghasilkan dokumen yang tersimpan di library, dan batas 3 per hari berlaku di server.
 
 - [x] Migrasi `credit_ledger`, `generations`, `assets`, `usage_limits` beserta RLS
-- [ ] `lib/credits`: saldo, spend transaksional dan idempoten, refund, bonus daftar
+- [x] `lib/credits`: saldo, spend transaksional dan idempoten, refund, bonus daftar
 - [ ] `lib/ai/text.ts` dengan satu provider, validasi zod, retry satu kali, timeout
 - [x] Endpoint `/api/ai/prd` dengan rate limit dan batas harian
 - [x] UI modul PRD Mini: input, hasil, salin, simpan
 - [x] Library `/app/library` dan halaman `/app/kredit` (saldo dan riwayat ledger)
-- [ ] Tes unit ledger: saldo tidak bisa negatif, spend idempoten
+- [x] Tes unit ledger: saldo tidak bisa negatif, spend idempoten
 
 ## Fase 2: Konten Studio dan Listing Optimizer (M1-01, M1-02, M3-01)
 
