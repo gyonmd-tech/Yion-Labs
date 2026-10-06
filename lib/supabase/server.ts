@@ -5,8 +5,9 @@ import { getPublicEnv } from "@/lib/env";
 
 /** Klien Supabase untuk Server Components, Server Actions, dan Route Handlers. */
 export async function createClient() {
-  const env = getPublicEnv();
+  // cookies() dulu: menandai rute sebagai dinamis sebelum env dibaca saat build.
   const cookieStore = await cookies();
+  const env = getPublicEnv();
 
   return createServerClient(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
     cookies: {

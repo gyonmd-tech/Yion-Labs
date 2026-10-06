@@ -1,0 +1,38 @@
+export const appCopy = {
+  portalLabel: "Portal",
+  greeting: (name: string) => (name ? `Halo, ${name}` : "Halo"),
+  portalDescription: "Pilih modul untuk mulai bekerja.",
+  modulesTitle: "Modul",
+  continueTitle: "Lanjutkan",
+  continueEmptyTitle: "Belum ada hasil",
+  continueEmptyBody: "Tiga hasil terakhirmu dari semua modul akan muncul di sini.",
+  topUp: "Top-up",
+  topUpSoon: "Top-up segera hadir",
+  credit: {
+    label: "Saldo kredit",
+    unavailable: "Saldo segera",
+    unavailableHint: "Saldo kredit aktif saat sistem kredit dibuka.",
+  },
+  nav: {
+    main: "Navigasi aplikasi",
+    openMenu: "Buka menu",
+    menuTitle: "Menu",
+    modules: "Modul",
+    breadcrumb: "Breadcrumb",
+  },
+  account: {
+    menu: "Menu akun",
+    signOut: "Keluar",
+  },
+  workspace: {
+    inputTab: "Input",
+    resultTab: "Hasil",
+    inputTitle: "Input",
+    resultTitle: "Hasil",
+    soonTitle: "Modul ini segera hadir",
+    soonBody: "Form untuk modul ini sedang disiapkan. Pantau statusnya di portal.",
+    resultEmptyTitle: "Belum ada hasil",
+    resultEmptyBody: "Hasil dari modul ini akan tampil di sini.",
+    backToPortal: "Kembali ke portal",
+  },
+} as const;
