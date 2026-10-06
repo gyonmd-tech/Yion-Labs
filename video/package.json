@@ -1,0 +1,30 @@
+{
+  "name": "labs-video",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Video promo Labs dengan Remotion. Proyek terpisah dari aplikasi Next.js.",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render LabsPromo out/labs-promo.mp4",
+    "still": "remotion still LabsPromo out/labs-promo.png --frame=420",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.533",
+    "@remotion/fonts": "4.0.533",
+    "lucide-react": "1.52.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "remotion": "4.0.533"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "typescript": "^5"
+  },
+  "packageManager": "pnpm@10.28.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}
